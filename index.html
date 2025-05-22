@@ -1,0 +1,45 @@
+<!DOCTYPE html>
+<html>
+<head>
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <style>
+    body { margin: 0; overflow: hidden; background: skyblue; }
+    .balloon {
+      position: absolute;
+      width: 60px;
+      height: 80px;
+      background: red;
+      border-radius: 50% 50% 50% 50%;
+    }
+  </style>
+</head>
+<body>
+  <script>
+    function createBalloon() {
+      const balloon = document.createElement("div");
+      balloon.className = "balloon";
+      balloon.style.left = Math.random() * (window.innerWidth - 60) + "px";
+      balloon.style.top = window.innerHeight + "px";
+      document.body.appendChild(balloon);
+
+      const move = setInterval(() => {
+        const top = parseFloat(balloon.style.top);
+        if (top < -100) {
+          balloon.remove();
+          clearInterval(move);
+        } else {
+          balloon.style.top = (top - 2) + "px";
+        }
+      }, 20);
+
+      balloon.addEventListener("click", () => {
+        balloon.remove();
+        clearInterval(move);
+        // Punkt oder Effekt anzeigen
+      });
+    }
+
+    setInterval(createBalloon, 1000);
+  </script>
+</body>
+</html>
