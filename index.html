@@ -4,7 +4,7 @@
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
   <style>
     body { margin: 0; overflow: hidden; background: skyblue; }
-    .franni {
+    .face {
       position: absolute;
       width: 100px;
       height: 100px;
@@ -13,7 +13,7 @@
       cursor: pointer;
       transition: transform 0.1s;
     }
-    .franni:active {
+    .face:active {
       transform: scale(1.1);
     }
   </style>
@@ -21,10 +21,22 @@
 <body>
 
 <script>
-  function createFranni() {
+  const persons = [
+    { name: "franni", img: "frannipic.jpg", sounds: ["franni1.mp3", "franni2.mp3", "franni3.mp3"] },
+    { name: "philipp",   img: "philipppic.jpg",   sounds: ["philipp1.mp3", "philipp2.mp3"] },
+    { name: "franzi",    img: "franzipic.jpg",    sounds: ["franzi1.mp3"] },
+    { name: "lutz",    img: "lutzpic.jpg",    sounds: ["lutz1.mp3", "lutz2.mp3"] },
+    { name: "john",   img: "johnpic.jpg",   sounds: ["john1.mp3"] },
+    { name: "evi",   img: "evipic.jpg",   sounds: ["evi1.mp3", "evi2.mp3"] },
+    { name: "papa",   img: "papapic.jpg",   sounds: ["papa1.mp3", "papa2.mp3"] },
+    { name: "mama",   img: "mamapic.jpg",   sounds: ["mama1.mp3"] },
+  ];
+
+  function spawnPerson() {
+    const person = persons[Math.floor(Math.random() * persons.length)];
     const img = document.createElement("img");
-    img.src = "franni.jpg";
-    img.className = "franni";
+    img.src = person.img;
+    img.className = "face";
     img.style.left = Math.random() * (window.innerWidth - 100) + "px";
     img.style.top = window.innerHeight + "px";
     document.body.appendChild(img);
@@ -40,14 +52,15 @@
     }, 20);
 
     img.addEventListener("click", () => {
-      const audio = new Audio("furz.mp3");
+      const randomSound = person.sounds[Math.floor(Math.random() * person.sounds.length)];
+      const audio = new Audio(randomSound);
       audio.play();
       img.remove();
       clearInterval(move);
     });
   }
 
-  setInterval(createFranni, 1500);
+  setInterval(spawnPerson, 1200);
 </script>
 
 </body>
