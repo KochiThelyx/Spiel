@@ -4,42 +4,50 @@
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
   <style>
     body { margin: 0; overflow: hidden; background: skyblue; }
-    .balloon {
+    .franni {
       position: absolute;
-      width: 60px;
-      height: 80px;
-      background: red;
-      border-radius: 50% 50% 50% 50%;
+      width: 100px;
+      height: 100px;
+      border-radius: 50%;
+      object-fit: cover;
+      cursor: pointer;
+      transition: transform 0.1s;
+    }
+    .franni:active {
+      transform: scale(1.1);
     }
   </style>
 </head>
 <body>
-  <script>
-    function createBalloon() {
-      const balloon = document.createElement("div");
-      balloon.className = "balloon";
-      balloon.style.left = Math.random() * (window.innerWidth - 60) + "px";
-      balloon.style.top = window.innerHeight + "px";
-      document.body.appendChild(balloon);
 
-      const move = setInterval(() => {
-        const top = parseFloat(balloon.style.top);
-        if (top < -100) {
-          balloon.remove();
-          clearInterval(move);
-        } else {
-          balloon.style.top = (top - 2) + "px";
-        }
-      }, 20);
+<script>
+  function createFranni() {
+    const img = document.createElement("img");
+    img.src = "franni.jpg"; // Bild direkt im Root-Verzeichnis
+    img.className = "franni";
+    img.style.left = Math.random() * (window.innerWidth - 100) + "px";
+    img.style.top = window.innerHeight + "px";
+    document.body.appendChild(img);
 
-      balloon.addEventListener("click", () => {
-        balloon.remove();
+    const move = setInterval(() => {
+      const top = parseFloat(img.style.top);
+      if (top < -120) {
+        img.remove();
         clearInterval(move);
-        // Punkt oder Effekt anzeigen
-      });
-    }
+      } else {
+        img.style.top = (top - 1.5) + "px";
+      }
+    }, 20);
 
-    setInterval(createBalloon, 1000);
-  </script>
+    img.addEventListener("click", () => {
+      alert("Hallo Franni! 🎉");
+      img.remove();
+      clearInterval(move);
+    });
+  }
+
+  setInterval(createFranni, 1500);
+</script>
+
 </body>
 </html>
