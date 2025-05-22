@@ -23,7 +23,7 @@
 <script>
   function createFranni() {
     const img = document.createElement("img");
-    img.src = "franni.jpg"; // Bild direkt im Root-Verzeichnis
+    img.src = "franni.jpg";
     img.className = "franni";
     img.style.left = Math.random() * (window.innerWidth - 100) + "px";
     img.style.top = window.innerHeight + "px";
@@ -40,7 +40,8 @@
     }, 20);
 
     img.addEventListener("click", () => {
-      alert("Hallo Franni! 🎉");
+      const audio = new Audio("furz.mp3");
+      audio.play();
       img.remove();
       clearInterval(move);
     });
