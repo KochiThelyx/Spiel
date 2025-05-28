@@ -3,6 +3,10 @@
 <head>
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
   <style>
+    html, body {
+      height: 100%;
+    }
+
     body {
       margin: 0;
       overflow: hidden;
@@ -142,7 +146,7 @@
     let highscore = parseInt(localStorage.getItem("highscore")) || 0;
 
     const persons = [
-      { name: "Onkel Franni", img: "Frannipic.jpeg", sounds: ["franni1.mp3", "franni2.mp3", "franni3.mp3"] },
+      { name: "Tante Franni", img: "Frannipic.jpeg", sounds: ["franni1.mp3", "franni2.mp3", "franni3.mp3"] },
       { name: "Onkel Philipp", img: "Philipppic.jpg", sounds: ["Philipp1.mp3", "Philipp2.mp3", "Philipp3.mp3", "Philipp4.mp3", "Philipp5.mp3"] },
       { name: "Mama", img: "Franzipic.jpg", sounds: ["Franzi1.ogg"] },
       { name: "Lutz", img: "Lutzpic.jpg", sounds: ["lutz1.mp3", "lutz2.mp3"] },
@@ -219,8 +223,7 @@
         if (person.name === currentTarget.name) {
           const sound = person.sounds[Math.floor(Math.random() * person.sounds.length)];
           const audio = new Audio(sound);
-          if (person.name === "Philipp") audio.volume = 1.0;
-          else audio.volume = 0.7;
+          audio.volume = 0.7;
           audio.play();
 
           score++;
