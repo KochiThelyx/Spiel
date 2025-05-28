@@ -118,11 +118,11 @@
     }
 
     function getMoveSpeed() {
-      return Math.min(25, 4 + score * 0.3); // höherer Score = schnelleres Aufsteigen
+      return Math.min(25, 2 + score * 0.6); // höherer Score = schnelleres Aufsteigen
     }
 
     function getSpawnCount() {
-      return Math.floor(Math.random() * 3) + 2; // 2 bis 4 Ballons pro Runde
+      return Math.floor(Math.random() * 4) + 3; // 2 bis 4 Ballons pro Runde
     }
 
     function spawnWave() {
