@@ -7,7 +7,7 @@
       margin: 0;
       overflow: hidden;
       background-image: url("hintergrund.jpg");
-      background-size: cover;
+      background-size: 100% 100%;
       background-position: center;
       background-repeat: no-repeat;
     }
@@ -99,35 +99,35 @@
       cursor: pointer;
     }
 
-    /* Responsive Anpassungen für kleine Bildschirme */
+    /* Kleinere Schrift und Ballons auf Handys */
     @media (max-width: 600px) {
       #score, #target, #timer {
-        font-size: 24px;
-        padding: 4px 8px;
+        font-size: 20px;
+        padding: 4px 6px;
       }
 
       #highscore {
-        font-size: 16px;
+        font-size: 14px;
       }
 
       #music-toggle {
-        font-size: 24px;
-        padding: 4px 8px;
+        font-size: 20px;
+        padding: 4px 6px;
       }
 
       #gameover-screen {
-        font-size: 24px;
+        font-size: 20px;
         padding-top: 15vh;
       }
 
       #gameover-screen button {
-        font-size: 18px;
-        padding: 8px 16px;
+        font-size: 16px;
+        padding: 8px 14px;
       }
 
       .face {
-        width: 70px;
-        height: 70px;
+        width: 60px;
+        height: 60px;
       }
     }
   </style>
