@@ -4,6 +4,18 @@
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
   <style>
     body { margin: 0; overflow: hidden; background: skyblue; }
+    
+     #score {
+      position: fixed;
+      top: 10px;
+      right: 15px;
+      font-size: 24px;
+      font-family: sans-serif;
+      background: rgba(255, 255, 255, 0.7);
+      padding: 6px 12px;
+      border-radius: 12px;
+      z-index: 1000;
+    }
     .face {
       position: absolute;
       width: 100px;
@@ -21,6 +33,13 @@
 <body>
 
 <script>
+  
+   let score = 0;
+
+    function updateScore() {
+      document.getElementById("score").innerText = "Punkte: " + score;
+    }
+
   const persons = [
     { name: "franni", img: "Frannipic.jpeg", sounds: ["franni1.mp3", "franni2.mp3", "franni3.mp3"] },
     { name: "philipp",   img: "Philipppic.jpg",   sounds: ["Philipp1.mp3", "Philipp2.mp3", "Philipp3.mp3", "Philipp4.mp3"] },
@@ -57,6 +76,9 @@
       audio.play();
       img.remove();
       clearInterval(move);
+
+      score++;
+        updateScore();
     });
   }
 
