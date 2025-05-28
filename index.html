@@ -7,9 +7,10 @@
       margin: 0;
       overflow: hidden;
       background-image: url("hintergrund.jpg");
-      background-size: 100% 100%;
+      background-size: cover;
       background-position: center;
       background-repeat: no-repeat;
+      background-attachment: fixed;
     }
 
     #score {
@@ -99,7 +100,7 @@
       cursor: pointer;
     }
 
-    /* Kleinere Schrift und Ballons auf Handys */
+    /* 📱 Verbesserungen für Mobilgeräte */
     @media (max-width: 600px) {
       #score, #target, #timer {
         font-size: 20px;
@@ -107,7 +108,7 @@
       }
 
       #highscore {
-        font-size: 14px;
+        font-size: 12px;
       }
 
       #music-toggle {
@@ -116,211 +117,20 @@
       }
 
       #gameover-screen {
-        font-size: 20px;
+        font-size: 18px;
         padding-top: 15vh;
       }
 
       #gameover-screen button {
-        font-size: 16px;
+        font-size: 14px;
         padding: 8px 14px;
       }
 
       .face {
-        width: 60px;
-        height: 60px;
+        width: 50px;
+        height: 50px;
       }
     }
   </style>
 </head>
 <body>
-
-  <div id="timer">Zeit: 60</div>
-  <div id="target">WO IST: ???</div>
-  <div id="score">
-    <span id="score-value">Punkte: 0</span>
-    <div id="highscore" style="font-size: 24px;">Highscore: 0</div>
-  </div>
-  <button id="music-toggle">🔊</button>
-
-  <div id="gameover-screen">
-    <div id="gameover-text">Game Over</div>
-    <div id="gameover-score"></div>
-    <button onclick="restartGame()">Neustart</button>
-  </div>
-
-  <audio id="background-music" src="tetris.mp3" autoplay loop></audio>
-
-  <script>
-    const music = document.getElementById("background-music");
-    music.volume = 0.1;
-
-    const musicToggle = document.getElementById("music-toggle");
-    musicToggle.addEventListener("click", () => {
-      if (music.paused) {
-        music.play();
-        musicToggle.innerText = "🔊";
-      } else {
-        music.pause();
-        musicToggle.innerText = "🔇";
-      }
-    });
-
-    let score = 0;
-    let currentTarget = null;
-    let gameOver = false;
-    let spawnInterval = null;
-    let timerInterval = null;
-    let timeLeft = 60;
-    let highscore = parseInt(localStorage.getItem("highscore")) || 0;
-
-    const persons = [
-      { name: "Tante Franni", img: "Frannipic.jpeg", sounds: ["franni1.mp3", "franni2.mp3", "franni3.mp3"] },
-      { name: "Onkel Philipp", img: "Philipppic.jpg", sounds: ["Philipp1.mp3", "Philipp2.mp3", "Philipp3.mp3", "Philipp4.mp3", "Philipp5.mp3"] },
-      { name: "Mama", img: "Franzipic.jpg", sounds: ["Franzi1.ogg"] },
-      { name: "Lutz", img: "Lutzpic.jpg", sounds: ["lutz1.mp3", "lutz2.mp3"] },
-      { name: "John", img: "Johnypic.jpg", sounds: ["John1.mp3"] },
-      { name: "Evi", img: "Evipic.jpg", sounds: ["Evi1.mp3"] },
-      { name: "Opa", img: "Vaterpic.jpg", sounds: ["Vater1.mp3", "Vater2.mp3", "Vater3.mp3", "Vater4.mp3", "Vater5.mp3", "Vater6.mp3", "Vater7.mp3", "Vater8.mp3"] },
-      { name: "Oma", img: "Mutterpic.jpg", sounds: ["Mutter1.mp3", "Mutter2.mp3", "Mutter3.mp3", "Mutter4.mp3", "Mutter5.mp3", "Mutter6.mp3", "Mutter7.mp3", "Mutter8.mp3"] },
-    ];
-
-    function updateScore() {
-      document.getElementById("score-value").innerText = "Punkte: " + score;
-    }
-
-    function updateHighscoreDisplay() {
-      document.getElementById("highscore").innerText = "Highscore: " + highscore;
-    }
-
-    function updateTimer() {
-      document.getElementById("timer").innerText = "Zeit: " + timeLeft;
-    }
-
-    function setNewTarget() {
-      currentTarget = persons[Math.floor(Math.random() * persons.length)];
-      document.getElementById("target").innerText = "WO IST DENN: " + currentTarget.name;
-    }
-
-    function getSpawnSpeed() {
-      return Math.max(150, 1200 - score * 50);
-    }
-
-    function getMoveSpeed() {
-      return Math.min(12, 1.5 + score * 0.2);
-    }
-
-    function getSpawnCount() {
-      return Math.floor(Math.random() * 5) + 3;
-    }
-
-    function spawnWave() {
-      if (gameOver) return;
-      for (let i = 0; i < getSpawnCount(); i++) {
-        spawnPerson();
-      }
-    }
-
-    function spawnPerson() {
-      if (gameOver) return;
-
-      const person = persons[Math.floor(Math.random() * persons.length)];
-      const img = document.createElement("img");
-      img.src = person.img;
-      img.className = "face";
-      img.style.left = Math.random() * (window.innerWidth - 100) + "px";
-      img.style.top = window.innerHeight + "px";
-      document.body.appendChild(img);
-
-      const speed = getMoveSpeed();
-      const move = setInterval(() => {
-        const top = parseFloat(img.style.top);
-        if (top < -120) {
-          img.remove();
-          clearInterval(move);
-        } else {
-          img.style.top = (top - speed) + "px";
-        }
-      }, 20);
-
-      img.addEventListener("click", () => {
-        if (gameOver) return;
-
-        img.remove();
-        clearInterval(move);
-
-        if (person.name === currentTarget.name) {
-          const sound = person.sounds[Math.floor(Math.random() * person.sounds.length)];
-          const audio = new Audio(sound);
-          audio.volume = 0.7;
-          audio.play();
-
-          score++;
-          updateScore();
-          updateHighscoreDisplay();
-          setNewTarget();
-
-          clearInterval(spawnInterval);
-          spawnInterval = setInterval(spawnWave, getSpawnSpeed());
-        } else {
-          endGame();
-        }
-      });
-    }
-
-    function startTimer() {
-      updateTimer();
-      timerInterval = setInterval(() => {
-        timeLeft--;
-        updateTimer();
-        if (timeLeft <= 0) {
-          clearInterval(timerInterval);
-          endGame();
-        }
-      }, 1000);
-    }
-
-    function endGame() {
-      gameOver = true;
-      clearInterval(spawnInterval);
-      clearInterval(timerInterval);
-      if (score > highscore) {
-        highscore = score;
-        localStorage.setItem("highscore", highscore);
-      }
-      document.getElementById("gameover-score").innerHTML = `Punkte: ${score} <br> Highscore: ${highscore}`;
-      document.getElementById("gameover-screen").style.display = "block";
-    }
-
-    function restartGame() {
-      document.querySelectorAll(".face").forEach(el => el.remove());
-      score = 0;
-      timeLeft = 60;
-      gameOver = false;
-      updateScore();
-      updateHighscoreDisplay();
-      updateTimer();
-      setNewTarget();
-      document.getElementById("gameover-screen").style.display = "none";
-      spawnInterval = setInterval(spawnWave, getSpawnSpeed());
-      startTimer();
-    }
-
-    function startGame() {
-      setNewTarget();
-      updateScore();
-      updateHighscoreDisplay();
-      updateTimer();
-      spawnInterval = setInterval(spawnWave, getSpawnSpeed());
-      startTimer();
-    }
-
-    startGame();
-
-    document.body.addEventListener("click", function startMusicOnce() {
-      music.play().catch(err => console.log("Autoplay blockiert:", err));
-      document.body.removeEventListener("click", startMusicOnce);
-    });
-  </script>
-
-</body>
-</html>
