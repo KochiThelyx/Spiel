@@ -105,6 +105,10 @@
  function getSpawnSpeed() {
       return Math.max(300, 1200 - score * 50); // wird schneller, aber nie unter 300ms
     }
+
+function getMoveSpeed() {
+  return 1.5 + score * 0.1; // Basis: 1.5 Pixel pro Tick, wird langsam schneller
+}
   
   const persons = [
     { name: "Franni", img: "Frannipic.jpeg", sounds: ["franni1.mp3", "franni2.mp3", "franni3.mp3"] },
@@ -128,16 +132,17 @@
     img.style.top = window.innerHeight + "px";
     document.body.appendChild(img);
 
-    const move = setInterval(() => {
-      const top = parseFloat(img.style.top);
-      if (top < -120) {
-        img.remove();
-        clearInterval(move);
-      } else {
-        img.style.top = (top - 1.5) + "px";
-      }
-    }, 20);
-
+    const speed = getMoveSpeed();
+const move = setInterval(() => {
+  const top = parseFloat(img.style.top);
+  if (top < -120) {
+    img.remove();
+    clearInterval(move);
+  } else {
+    img.style.top = (top - speed) + "px";
+  }
+}, 20);
+    
    img.addEventListener("click", () => {
         if (gameOver) return;
 
