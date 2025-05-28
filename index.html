@@ -37,6 +37,18 @@
       z-index: 1000;
     }
 
+    #timer {
+      position: fixed;
+      top: 10px;
+      left: 15px;
+      font-size: 48px;
+      font-family: sans-serif;
+      background: rgba(255, 255, 255, 0.7);
+      padding: 6px 12px;
+      border-radius: 12px;
+      z-index: 1000;
+    }
+
     .face {
       position: absolute;
       width: 100px;
@@ -77,6 +89,7 @@
 </head>
 <body>
 
+  <div id="timer">Zeit: 30</div>
   <div id="target">WO IST: ???</div>
   <div id="score">Punkte: 0</div>
 
@@ -86,7 +99,6 @@
     <button onclick="restartGame()">Neustart</button>
   </div>
 
-  <!-- 🎵 Hintergrundmusik -->
   <audio id="background-music" src="tetris.mp3" autoplay loop></audio>
 
   <script>
@@ -96,6 +108,8 @@
     let currentTarget = null;
     let gameOver = false;
     let spawnInterval = null;
+    let timerInterval = null;
+    let timeLeft = 30;
     let highscore = parseInt(localStorage.getItem("highscore")) || 0;
 
     const persons = [
@@ -106,113 +120,4 @@
       { name: "John", img: "Johnypic.jpg", sounds: ["John1.mp3"] },
       { name: "Evi", img: "Evipic.jpg", sounds: ["Evi1.mp3"] },
       { name: "Papa", img: "Vaterpic.jpg", sounds: ["Vater1.mp3", "Vater2.mp3", "Vater3.mp3", "Vater4.mp3", "Vater5.mp3", "Vater6.mp3", "Vater7.mp3", "Vater8.mp3"] },
-      { name: "Mama", img: "Mutterpic.jpg", sounds: ["Mutter1.mp3", "Mutter2.mp3", "Mutter3.mp3", "Mutter4.mp3", "Mutter5.mp3", "Mutter6.mp3", "Mutter7.mp3", "Mutter8.mp3"] },
-    ];
-
-    function updateScore() {
-      document.getElementById("score").innerText = "Punkte: " + score;
-    }
-
-    function setNewTarget() {
-      currentTarget = persons[Math.floor(Math.random() * persons.length)];
-      document.getElementById("target").innerText = "WO IST DENN: " + currentTarget.name;
-    }
-
-    function getSpawnSpeed() {
-      return Math.max(150, 1200 - score * 50);
-    }
-
-    function getMoveSpeed() {
-      return Math.min(12, 1.5 + score * 0.2); // ← Punkt statt Komma hier
-    }
-
-    function getSpawnCount() {
-      return Math.floor(Math.random() * 3) + 2;
-    }
-
-    function spawnWave() {
-      if (gameOver) return;
-      for (let i = 0; i < getSpawnCount(); i++) {
-        spawnPerson();
-      }
-    }
-
-    function spawnPerson() {
-      if (gameOver) return;
-
-      const person = persons[Math.floor(Math.random() * persons.length)];
-      const img = document.createElement("img");
-      img.src = person.img;
-      img.className = "face";
-      img.style.left = Math.random() * (window.innerWidth - 100) + "px";
-      img.style.top = window.innerHeight + "px";
-      document.body.appendChild(img);
-
-      const speed = getMoveSpeed();
-      const move = setInterval(() => {
-        const top = parseFloat(img.style.top);
-        if (top < -120) {
-          img.remove();
-          clearInterval(move);
-        } else {
-          img.style.top = (top - speed) + "px";
-        }
-      }, 20);
-
-      img.addEventListener("click", () => {
-        if (gameOver) return;
-
-        img.remove();
-        clearInterval(move);
-
-        if (person.name === currentTarget.name) {
-          const sound = person.sounds[Math.floor(Math.random() * person.sounds.length)];
-          new Audio(sound).play();
-          score++;
-          updateScore();
-          setNewTarget();
-
-          clearInterval(spawnInterval);
-          spawnInterval = setInterval(spawnWave, getSpawnSpeed());
-        } else {
-          endGame();
-        }
-      });
-    }
-
-    function endGame() {
-      gameOver = true;
-      clearInterval(spawnInterval);
-      if (score > highscore) {
-        highscore = score;
-        localStorage.setItem("highscore", highscore);
-      }
-      document.getElementById("gameover-score").innerHTML = `Punkte: ${score} <br> Highscore: ${highscore}`;
-      document.getElementById("gameover-screen").style.display = "block";
-    }
-
-    function restartGame() {
-      document.querySelectorAll(".face").forEach(el => el.remove());
-      score = 0;
-      gameOver = false;
-      updateScore();
-      setNewTarget();
-      document.getElementById("gameover-screen").style.display = "none";
-      spawnInterval = setInterval(spawnWave, getSpawnSpeed());
-    }
-
-    // Spielstart
-    setNewTarget();
-    updateScore();
-    spawnInterval = setInterval(spawnWave, getSpawnSpeed());
-
-    // Autoplay-Fix für Musik nach erstem Klick
-    document.body.addEventListener("click", function startMusicOnce() {
-      const music = document.getElementById("background-music");
-      music.play().catch(err => console.log("Autoplay blockiert:", err));
-      document.body.removeEventListener("click", startMusicOnce);
-    });
-  </script>
-
-</body>
-</html>
+      { name: "Mama", img: "Mutterpic.jpg", sounds: ["Mutter1.mp3", "Mutter2.mp3", "Mutter3.mp3", "Mutter4.mp3", "Mutt]()
