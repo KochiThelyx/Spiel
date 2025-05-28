@@ -86,11 +86,12 @@
     <button onclick="restartGame()">Neustart</button>
   </div>
 
-<audio id="background-music" src="tetris.mp3" autoplay loop></audio>
-  
+  <!-- 🎵 Hintergrundmusik -->
+  <audio id="background-music" src="tetris.mp3" autoplay loop></audio>
+
   <script>
     document.getElementById("background-music").volume = 0.3;
-    
+
     let score = 0;
     let currentTarget = null;
     let gameOver = false;
@@ -118,15 +119,15 @@
     }
 
     function getSpawnSpeed() {
-      return Math.max(150, 1200 - score * 50); // schneller mit mehr Punkten
+      return Math.max(150, 1200 - score * 50);
     }
 
     function getMoveSpeed() {
-      return Math.min(15, 1,5 + score * 0.6); // höherer Score = schnelleres Aufsteigen
+      return Math.min(15, 1.5 + score * 0.6); // ← Punkt statt Komma hier
     }
 
     function getSpawnCount() {
-      return Math.floor(Math.random() * 3) + 2; // 2 bis 4 Ballons pro Runde
+      return Math.floor(Math.random() * 3) + 2;
     }
 
     function spawnWave() {
@@ -204,6 +205,13 @@
     setNewTarget();
     updateScore();
     spawnInterval = setInterval(spawnWave, getSpawnSpeed());
+
+    // Autoplay-Fix für Musik nach erstem Klick
+    document.body.addEventListener("click", function startMusicOnce() {
+      const music = document.getElementById("background-music");
+      music.play().catch(err => console.log("Autoplay blockiert:", err));
+      document.body.removeEventListener("click", startMusicOnce);
+    });
   </script>
 
 </body>
