@@ -3,21 +3,25 @@
 <head>
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
   <style>
-    body {
+    html, body {
       margin: 0;
+      padding: 0;
       overflow: hidden;
+      height: 100%;
+    }
+
+    body {
       background-image: url("hintergrund.jpg");
       background-size: cover;
       background-position: center;
       background-repeat: no-repeat;
-      background-attachment: fixed;
     }
 
     #score {
       position: fixed;
       top: 10px;
       right: 15px;
-      font-size: 48px;
+      font-size: 4vw;
       font-family: sans-serif;
       background: rgba(255, 255, 255, 0.7);
       padding: 6px 12px;
@@ -30,7 +34,7 @@
       top: 10px;
       left: 50%;
       transform: translateX(-50%);
-      font-size: 48px;
+      font-size: 4vw;
       background: rgba(255, 255, 255, 0.7);
       padding: 6px 12px;
       border-radius: 12px;
@@ -42,7 +46,7 @@
       position: fixed;
       top: 10px;
       left: 15px;
-      font-size: 48px;
+      font-size: 4vw;
       font-family: sans-serif;
       background: rgba(255, 255, 255, 0.7);
       padding: 6px 12px;
@@ -54,7 +58,7 @@
       position: fixed;
       top: 70px;
       left: 15px;
-      font-size: 36px;
+      font-size: 3.5vw;
       background: rgba(255, 255, 255, 0.7);
       border: none;
       border-radius: 12px;
@@ -65,8 +69,8 @@
 
     .face {
       position: absolute;
-      width: 100px;
-      height: 100px;
+      width: 10vw;
+      height: 10vw;
       border-radius: 50%;
       object-fit: cover;
       cursor: pointer;
@@ -87,48 +91,47 @@
       background: rgba(0, 0, 0, 0.8);
       color: white;
       font-family: sans-serif;
-      font-size: 36px;
+      font-size: 4vw;
       text-align: center;
       z-index: 2000;
       padding-top: 20vh;
     }
 
     #gameover-screen button {
-      font-size: 24px;
+      font-size: 3vw;
       margin-top: 20px;
       padding: 10px 20px;
       cursor: pointer;
     }
 
-    /* 📱 Mobile-Optimierung */
+    #highscore {
+      font-size: 2vw;
+    }
+
     @media (max-width: 600px) {
       #score, #target, #timer {
-        font-size: 20px;
-        padding: 4px 6px;
-      }
-
-      #highscore {
-        font-size: 12px;
+        font-size: 5vw;
       }
 
       #music-toggle {
-        font-size: 20px;
-        padding: 4px 6px;
-      }
-
-      #gameover-screen {
-        font-size: 18px;
-        padding-top: 15vh;
-      }
-
-      #gameover-screen button {
-        font-size: 14px;
-        padding: 8px 14px;
+        font-size: 5vw;
       }
 
       .face {
-        width: 50px;
-        height: 50px;
+        width: 15vw;
+        height: 15vw;
+      }
+
+      #highscore {
+        font-size: 3vw;
+      }
+
+      #gameover-screen {
+        font-size: 5vw;
+      }
+
+      #gameover-screen button {
+        font-size: 4vw;
       }
     }
   </style>
@@ -139,7 +142,7 @@
   <div id="target">WO IST: ???</div>
   <div id="score">
     <span id="score-value">Punkte: 0</span>
-    <div id="highscore" style="font-size: 24px;">Highscore: 0</div>
+    <div id="highscore">Highscore: 0</div>
   </div>
   <button id="music-toggle">🔊</button>
 
@@ -155,8 +158,7 @@
     const music = document.getElementById("background-music");
     music.volume = 0.1;
 
-    const musicToggle = document.getElementById("music-toggle");
-    musicToggle.addEventListener("click", () => {
+    document.getElementById("music-toggle").addEventListener("click", () => {
       if (music.paused) {
         music.play();
         musicToggle.innerText = "🔊";
@@ -245,7 +247,6 @@
 
       img.addEventListener("click", () => {
         if (gameOver) return;
-
         img.remove();
         clearInterval(move);
 
