@@ -107,8 +107,19 @@
     }
 
 function getMoveSpeed() {
-  return Math.min(15, 2 + score * 0.3); // Basis: 2px, steigt mit Score, max 10
+  return Math.min(25, 4 + score * 0.3); // Basis: 2px, steigt mit Score, max 10
 }
+
+   function getSpawnCount() {
+      return Math.floor(Math.random() * 3) + 2; // 2 bis 4 Ballons pro Tick
+    }
+
+   function spawnWave() {
+      if (gameOver) return;
+      for (let i = 0; i < getSpawnCount(); i++) {
+        spawnPerson();
+      }
+    }
   
   const persons = [
     { name: "Franni", img: "Frannipic.jpeg", sounds: ["franni1.mp3", "franni2.mp3", "franni3.mp3"] },
