@@ -4,14 +4,15 @@
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
   <style>
     body {
-  margin: 0;
-  overflow: hidden;
-  background-image: url("hintergrund.jpg");
-  background-size: cover;
-  background-position: center;
-  background-repeat: no-repeat;
-}
-     #score {
+      margin: 0;
+      overflow: hidden;
+      background-image: url("hintergrund.jpg");
+      background-size: cover;
+      background-position: center;
+      background-repeat: no-repeat;
+    }
+
+    #score {
       position: fixed;
       top: 10px;
       right: 15px;
@@ -22,8 +23,8 @@
       border-radius: 12px;
       z-index: 1000;
     }
-    
-#target {
+
+    #target {
       position: fixed;
       top: 10px;
       left: 50%;
@@ -35,7 +36,7 @@
       font-family: sans-serif;
       z-index: 1000;
     }
-    
+
     .face {
       position: absolute;
       width: 100px;
@@ -45,11 +46,12 @@
       cursor: pointer;
       transition: transform 0.1s;
     }
+
     .face:active {
       transform: scale(1.1);
     }
 
-     #gameover-screen {
+    #gameover-screen {
       display: none;
       position: fixed;
       top: 0;
@@ -64,96 +66,95 @@
       z-index: 2000;
       padding-top: 20vh;
     }
-    
+
     #gameover-screen button {
       font-size: 24px;
       margin-top: 20px;
       padding: 10px 20px;
       cursor: pointer;
     }
-    
   </style>
 </head>
 <body>
 
   <div id="target">WO IST: ???</div>
- <div id="score">Punkte: 0</div>
+  <div id="score">Punkte: 0</div>
 
-<div id="gameover-screen">
+  <div id="gameover-screen">
     <div id="gameover-text">Game Over</div>
     <div id="gameover-score"></div>
     <button onclick="restartGame()">Neustart</button>
   </div>
-  
-<script>
-  
+
+  <script>
     let score = 0;
     let currentTarget = null;
     let gameOver = false;
     let spawnInterval = null;
     let highscore = parseInt(localStorage.getItem("highscore")) || 0;
-  
+
+    const persons = [
+      { name: "Franni", img: "Frannipic.jpeg", sounds: ["franni1.mp3", "franni2.mp3", "franni3.mp3"] },
+      { name: "Philipp", img: "Philipppic.jpg", sounds: ["Philipp1.mp3", "Philipp2.mp3", "Philipp3.mp3", "Philipp4.mp3"] },
+      { name: "Franzi", img: "Franzipic.jpg", sounds: ["Franzi1.ogg"] },
+      { name: "Lutz", img: "Lutzpic.jpg", sounds: ["lutz1.mp3", "lutz2.mp3"] },
+      { name: "John", img: "Johnypic.jpg", sounds: ["John1.mp3"] },
+      { name: "Evi", img: "Evipic.jpg", sounds: ["Evi1.mp3"] },
+      { name: "Papa", img: "Vaterpic.jpg", sounds: ["Vater1.mp3", "Vater2.mp3", "Vater3.mp3", "Vater4.mp3", "Vater5.mp3", "Vater6.mp3", "Vater7.mp3", "Vater8.mp3"] },
+      { name: "Mama", img: "Mutterpic.jpg", sounds: ["Mutter1.mp3", "Mutter2.mp3", "Mutter3.mp3", "Mutter4.mp3", "Mutter5.mp3", "Mutter6.mp3", "Mutter7.mp3", "Mutter8.mp3"] },
+    ];
+
     function updateScore() {
       document.getElementById("score").innerText = "Punkte: " + score;
     }
 
-   function setNewTarget() {
+    function setNewTarget() {
       currentTarget = persons[Math.floor(Math.random() * persons.length)];
       document.getElementById("target").innerText = "WO IST DENN: " + currentTarget.name;
     }
 
- function getSpawnSpeed() {
-      return Math.max(150, 1200 - score * 50); // wird schneller, aber nie unter 300ms
+    function getSpawnSpeed() {
+      return Math.max(150, 1200 - score * 50); // schneller mit mehr Punkten
     }
 
-function getMoveSpeed() {
-  return Math.min(25, 4 + score * 0.3); // Basis: 2px, steigt mit Score, max 10
-}
-
-   function getSpawnCount() {
-      return Math.floor(Math.random() * 3) + 2; // 2 bis 4 Ballons pro Tick
+    function getMoveSpeed() {
+      return Math.min(25, 4 + score * 0.3); // höherer Score = schnelleres Aufsteigen
     }
 
-   function spawnWave() {
+    function getSpawnCount() {
+      return Math.floor(Math.random() * 3) + 2; // 2 bis 4 Ballons pro Runde
+    }
+
+    function spawnWave() {
       if (gameOver) return;
       for (let i = 0; i < getSpawnCount(); i++) {
         spawnPerson();
       }
     }
-  
-  const persons = [
-    { name: "Franni", img: "Frannipic.jpeg", sounds: ["franni1.mp3", "franni2.mp3", "franni3.mp3"] },
-    { name: "Philipp",   img: "Philipppic.jpg",   sounds: ["Philipp1.mp3", "Philipp2.mp3", "Philipp3.mp3", "Philipp4.mp3"] },
-    { name: "Franzi",    img: "Franzipic.jpg",    sounds: ["Franzi1.ogg"] },
-    { name: "Lutz",    img: "Lutzpic.jpg",    sounds: ["lutz1.mp3", "lutz2.mp3"] },
-    { name: "John",   img: "Johnypic.jpg",   sounds: ["John1.mp3"] },
-    { name: "Evi",   img: "Evipic.jpg",   sounds: ["Evi1.mp3"] },
-    { name: "Papa",   img: "Vaterpic.jpg",   sounds: ["Vater1.mp3", "Vater2.mp3", "Vater3.mp3", "Vater4.mp3", "Vater5.mp3", "Vater6.mp3", "Vater7.mp3", "Vater8.mp3"] },
-    { name: "Mama",   img: "Mutterpic.jpg",   sounds: ["Mutter1.mp3", "Mutter2.mp3", "Mutter3.mp3", "Mutter4.mp3", "Mutter5.mp3", "Mutter6.mp3", "Mutter7.mp3", "Mutter8.mp3"] },
-  ];
 
-  function spawnPerson() {
-    if (gameOver) return;
-    
-    const person = persons[Math.floor(Math.random() * persons.length)];
-    const img = document.createElement("img");
-    img.src = person.img;
-    img.className = "face";
-    img.style.left = Math.random() * (window.innerWidth - 100) + "px";
-    img.style.top = window.innerHeight + "px";
-    document.body.appendChild(img);
-    const speed = getMoveSpeed();
-const move = setInterval(() => {
-  const top = parseFloat(img.style.top);
-  if (top < -120) {
-    img.remove();
-    clearInterval(move);
-  } else {
-    img.style.top = (top - speed) + "px";
-  }
-}, 20);
-    
-   img.addEventListener("click", () => {
+    function spawnPerson() {
+      if (gameOver) return;
+
+      const person = persons[Math.floor(Math.random() * persons.length)];
+      const img = document.createElement("img");
+      img.src = person.img;
+      img.className = "face";
+      img.style.left = Math.random() * (window.innerWidth - 100) + "px";
+      img.style.top = window.innerHeight + "px";
+      document.body.appendChild(img);
+
+      const speed = getMoveSpeed();
+      const move = setInterval(() => {
+        const top = parseFloat(img.style.top);
+        if (top < -120) {
+          img.remove();
+          clearInterval(move);
+        } else {
+          img.style.top = (top - speed) + "px";
+        }
+      }, 20);
+
+      img.addEventListener("click", () => {
         if (gameOver) return;
 
         img.remove();
@@ -166,10 +167,8 @@ const move = setInterval(() => {
           updateScore();
           setNewTarget();
 
-          // Geschwindigkeit anpassen
           clearInterval(spawnInterval);
-          spawnInterval = setInterval(spawnPerson, getSpawnSpeed());
-
+          spawnInterval = setInterval(spawnWave, getSpawnSpeed());
         } else {
           endGame();
         }
@@ -194,13 +193,13 @@ const move = setInterval(() => {
       updateScore();
       setNewTarget();
       document.getElementById("gameover-screen").style.display = "none";
-      spawnInterval = setInterval(spawnPerson, getSpawnSpeed());
+      spawnInterval = setInterval(spawnWave, getSpawnSpeed());
     }
 
     // Spielstart
     setNewTarget();
     updateScore();
-    spawnInterval = setInterval(spawnPerson, getSpawnSpeed());
+    spawnInterval = setInterval(spawnWave, getSpawnSpeed());
   </script>
 
 </body>
