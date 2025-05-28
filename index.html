@@ -101,6 +101,10 @@
       currentTarget = persons[Math.floor(Math.random() * persons.length)];
       document.getElementById("target").innerText = "WO IST DENN: " + currentTarget.name;
     }
+
+ function getSpawnSpeed() {
+      return Math.max(300, 1200 - score * 50); // wird schneller, aber nie unter 300ms
+    }
   
   const persons = [
     { name: "Franni", img: "Frannipic.jpeg", sounds: ["franni1.mp3", "franni2.mp3", "franni3.mp3"] },
@@ -139,19 +143,25 @@
 
         img.remove();
         clearInterval(move);
-    
- if (person.name === currentTarget.name) {
+
+        if (person.name === currentTarget.name) {
           const sound = person.sounds[Math.floor(Math.random() * person.sounds.length)];
           new Audio(sound).play();
           score++;
           updateScore();
           setNewTarget();
+
+          // Geschwindigkeit anpassen
+          clearInterval(spawnInterval);
+          spawnInterval = setInterval(spawnPerson, getSpawnSpeed());
+
         } else {
           endGame();
         }
       });
     }
- function endGame() {
+
+    function endGame() {
       gameOver = true;
       clearInterval(spawnInterval);
       if (score > highscore) {
@@ -169,13 +179,13 @@
       updateScore();
       setNewTarget();
       document.getElementById("gameover-screen").style.display = "none";
-      spawnInterval = setInterval(spawnPerson, 1200);
+      spawnInterval = setInterval(spawnPerson, getSpawnSpeed());
     }
 
-    // Start beim Laden
+    // Spielstart
     setNewTarget();
     updateScore();
-    spawnInterval = setInterval(spawnPerson, 600);
+    spawnInterval = setInterval(spawnPerson, getSpawnSpeed());
   </script>
 
 </body>
