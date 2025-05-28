@@ -3,10 +3,6 @@
 <head>
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
   <style>
-    html, body {
-      height: 100%;
-    }
-
     body {
       margin: 0;
       overflow: hidden;
@@ -101,6 +97,38 @@
       margin-top: 20px;
       padding: 10px 20px;
       cursor: pointer;
+    }
+
+    /* Responsive Anpassungen für kleine Bildschirme */
+    @media (max-width: 600px) {
+      #score, #target, #timer {
+        font-size: 24px;
+        padding: 4px 8px;
+      }
+
+      #highscore {
+        font-size: 16px;
+      }
+
+      #music-toggle {
+        font-size: 24px;
+        padding: 4px 8px;
+      }
+
+      #gameover-screen {
+        font-size: 24px;
+        padding-top: 15vh;
+      }
+
+      #gameover-screen button {
+        font-size: 18px;
+        padding: 8px 16px;
+      }
+
+      .face {
+        width: 70px;
+        height: 70px;
+      }
     }
   </style>
 </head>
