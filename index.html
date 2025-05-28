@@ -86,7 +86,10 @@
     <button onclick="restartGame()">Neustart</button>
   </div>
 
+<audio id="background-music" src="tetris.mp3" autoplay loop></audio>
+  
   <script>
+    document.getElementById("background-music").volume = 0.3;
     let score = 0;
     let currentTarget = null;
     let gameOver = false;
