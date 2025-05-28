@@ -103,11 +103,11 @@
     }
 
  function getSpawnSpeed() {
-      return Math.max(300, 1200 - score * 50); // wird schneller, aber nie unter 300ms
+      return Math.max(150, 1200 - score * 50); // wird schneller, aber nie unter 300ms
     }
 
 function getMoveSpeed() {
-  return 1.5 + score * 0.1; // Basis: 1.5 Pixel pro Tick, wird langsam schneller
+  return Math.min(15, 2 + score * 0.3); // Basis: 2px, steigt mit Score, max 10
 }
   
   const persons = [
@@ -131,7 +131,6 @@ function getMoveSpeed() {
     img.style.left = Math.random() * (window.innerWidth - 100) + "px";
     img.style.top = window.innerHeight + "px";
     document.body.appendChild(img);
-
     const speed = getMoveSpeed();
 const move = setInterval(() => {
   const top = parseFloat(img.style.top);
