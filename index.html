@@ -102,7 +102,7 @@
 </head>
 <body>
 
-  <div id="timer">Zeit: 30</div>
+  <div id="timer">Zeit: 60</div>
   <div id="target">WO IST: ???</div>
   <div id="score">Punkte: 0</div>
   <button id="music-toggle">🔊</button>
@@ -135,7 +135,7 @@
     let gameOver = false;
     let spawnInterval = null;
     let timerInterval = null;
-    let timeLeft = 30;
+    let timeLeft = 60;
     let highscore = parseInt(localStorage.getItem("highscore")) || 0;
 
     const persons = [
@@ -167,7 +167,7 @@
     }
 
     function getMoveSpeed() {
-      return Math.min(15, 1.5 + score * 0.6);
+      return Math.min(12, 1.5 + score * 0.3);
     }
 
     function getSpawnCount() {
@@ -251,7 +251,7 @@
     function restartGame() {
       document.querySelectorAll(".face").forEach(el => el.remove());
       score = 0;
-      timeLeft = 30;
+      timeLeft = 60;
       gameOver = false;
       updateScore();
       updateTimer();
