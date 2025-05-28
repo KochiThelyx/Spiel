@@ -105,9 +105,9 @@
   <div id="timer">Zeit: 60</div>
   <div id="target">WO IST: ???</div>
   <div id="score">
-  Punkte: 0
-  <div id="highscore" style="font-size: 24px;">Highscore: 0</div>
-</div>
+    <span id="score-value">Punkte: 0</span>
+    <div id="highscore" style="font-size: 24px;">Highscore: 0</div>
+  </div>
   <button id="music-toggle">🔊</button>
 
   <div id="gameover-screen">
@@ -153,12 +153,12 @@
     ];
 
     function updateScore() {
-      document.getElementById("score").innerText = "Punkte: " + score;
+      document.getElementById("score-value").innerText = "Punkte: " + score;
     }
 
     function updateHighscoreDisplay() {
-  document.getElementById("highscore").innerText = "Highscore: " + highscore;
-}
+      document.getElementById("highscore").innerText = "Highscore: " + highscore;
+    }
 
     function updateTimer() {
       document.getElementById("timer").innerText = "Zeit: " + timeLeft;
@@ -218,7 +218,11 @@
 
         if (person.name === currentTarget.name) {
           const sound = person.sounds[Math.floor(Math.random() * person.sounds.length)];
-          new Audio(sound).play();
+          const audio = new Audio(sound);
+          if (person.name === "Philipp") audio.volume = 1.0;
+          else audio.volume = 0.7;
+          audio.play();
+
           score++;
           updateScore();
           updateHighscoreDisplay();
@@ -278,6 +282,7 @@
       spawnInterval = setInterval(spawnWave, getSpawnSpeed());
       startTimer();
     }
+
     startGame();
 
     document.body.addEventListener("click", function startMusicOnce() {
