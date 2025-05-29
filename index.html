@@ -23,7 +23,7 @@
       position: fixed;
       top: 10px;
       left: 15px;
-      font-size: clamp(16px, 4vw, 36px);
+      font-size: clamp(14px, 4vw, 32px);
       background: rgba(255,255,255,0.7);
       padding: 6px 12px;
       border-radius: 12px;
@@ -34,7 +34,7 @@
       position: fixed;
       top: 10px;
       right: 15px;
-      font-size: clamp(16px, 4vw, 36px);
+      font-size: clamp(14px, 4vw, 32px);
       background: rgba(255,255,255,0.7);
       padding: 6px 12px;
       border-radius: 12px;
@@ -142,7 +142,7 @@ function getSpawnSpeed() {
 }
 
 function getMoveSpeed() {
-  return Math.min(10, 1 + score * 0.1);
+  return Math.min(12, 1.5 + score * 0.2);
 }
 
 function getSpawnCount() {
@@ -180,6 +180,7 @@ function spawnPerson() {
 
   img.addEventListener("click", () => {
     if (gameOver) return;
+
     img.remove();
     clearInterval(move);
 
@@ -187,9 +188,12 @@ function spawnPerson() {
       const sound = person.sounds[Math.floor(Math.random() * person.sounds.length)];
       new Audio(sound).play();
       score++;
-      updateScore();
       setNewTarget();
+    } else {
+      score = Math.max(0, score - 1); // Punkt abziehen bei falschem Klick
     }
+
+    updateScore();
   });
 }
 
